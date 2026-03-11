@@ -15,11 +15,31 @@ int main(int argc, char *argv[]) {
 
     command[strcspn(command, "\n")] = '\0';
 
-    if (strcmp(command, "exit") == 0)
+    if (strcmp(command, "exit") == 0) {
       break;
-    else if (strncmp(command, "echo ", 5) == 0)
-      printf("%s\n", command + 5);
-    else printf("%s: command not found\n", command);
+
+    } else if (strncmp(command, "echo", 4) == 0) {
+      char *arg = command + 5;
+
+      if (arg == NULL) {
+        printf("\n");
+      } else {
+        printf("%s\n", arg);
+      }
+
+    } else if (strncmp(command, "type ", 5) == 0) {
+      char *arg = command + 5;
+
+      if (strcmp(arg, "exit") == 0 || strcmp(arg, "echo") == 0 || strcmp(arg, "type") == 0) {
+        printf("%s is a shell builtin\n", command + 5);
+      } else {
+        printf("%s: command not found\n", command);
+      }
+
+    } else {
+      printf("%s: command not found\n", command);
+
+    }
   }
 
   return 0;
